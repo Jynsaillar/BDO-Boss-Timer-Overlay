@@ -1,7 +1,7 @@
 # BDO-Boss-Timer-Overlay
 
 ## Submodules
-This program uses a [modified version]() of [Overlay.NET]() by Jacob Kemple.
+This program uses a [modified version](https://github.com/Jynsaillar/Overlay.NET) of [Overlay.NET](https://github.com/lolp1/Overlay.NET) by Jacob Kemple.
 If you clone this repository, do so with  
 `git clone --recurse-submodules https://github.com/Jynsaillar/BDO-Boss-Timer-Overlay.git`.
 
