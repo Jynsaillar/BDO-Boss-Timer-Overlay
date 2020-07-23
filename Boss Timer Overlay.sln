@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30223.230
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Boss Timer Overlay", "Boss Timer Overlay.csproj", "{93ED9A8E-5CD6-4C3D-A62E-259318193E45}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Overlay.NET", "..\Overlay.NET\src\Overlay.NET\Overlay.NET.csproj", "{2D411EA5-BC00-4630-B25E-43C554323E72}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{93ED9A8E-5CD6-4C3D-A62E-259318193E45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93ED9A8E-5CD6-4C3D-A62E-259318193E45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93ED9A8E-5CD6-4C3D-A62E-259318193E45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93ED9A8E-5CD6-4C3D-A62E-259318193E45}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D411EA5-BC00-4630-B25E-43C554323E72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D411EA5-BC00-4630-B25E-43C554323E72}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D411EA5-BC00-4630-B25E-43C554323E72}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D411EA5-BC00-4630-B25E-43C554323E72}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BEBD4A68-1A0D-4DBF-87E6-96C369F239BA}
+	EndGlobalSection
+EndGlobal
