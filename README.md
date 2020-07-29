@@ -1,4 +1,9 @@
-# BDO-Boss-Timer-Overlay
+# BDO-Boss-Timer-Overlay-Web
+
+## About
+This project is web-based, which means that it makes web requests to a boss timer webserver every minute.
+As you can imagine, this is very suboptimal for more than one concurrent user.
+The only reason for this project is to serve as a fork template for the non-web-based rewrite (<link coming soon>)[].
 
 ## Submodules
 This program uses a [modified version](https://github.com/Jynsaillar/Overlay.NET) of [Overlay.NET](https://github.com/lolp1/Overlay.NET) by Jacob Kemple.
