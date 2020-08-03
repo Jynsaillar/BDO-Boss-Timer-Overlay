@@ -8,7 +8,7 @@ namespace Boss_Timer_Overlay.RenderCode
 {
     public static class RenderManager
     {
-        private static OverlayLoop _overlayLoop;
+        private static readonly OverlayLoop _overlayLoop;
 
         public static Thread _renderThread;
         public static bool RendererIsRunning = false;
@@ -43,6 +43,7 @@ namespace Boss_Timer_Overlay.RenderCode
             if (RendererIsRunning == false)
                 return;
 
+            /*
             var bossData = GeneralManager.GetBossData("https://mmotimer.com/bdo/streamwidget/stream.php?server=eu");
 
             var bossInfoString = GeneralManager.BossDataToInfoString(bossData);
@@ -56,6 +57,7 @@ namespace Boss_Timer_Overlay.RenderCode
 
             SetRenderFont("Georgia", 12);
             UpdateRenderString(bossInfoString);
+            */
         }
 
         public static void StartRenderer()
