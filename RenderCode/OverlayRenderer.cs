@@ -136,7 +136,7 @@ namespace Boss_Timer_Overlay.RenderCode
 
             // Draw segment; Place draw code here
 
-            OverlayWindow.Graphics.DrawBitmap(1810f, 295f, 1810f + 90f, 295f + 90f); // x, y, x+imageWidth, y+imageHeight
+            OverlayWindow.Graphics.DrawBitmap(0, 1810f, 295f, 1810f + 90f, 295f + 90f); // x, y, x+imageWidth, y+imageHeight
 
             // Outline:
             OverlayWindow.Graphics.DrawText(_renderString, _outlineFont, _blackBrush, 1605 + 1, 300 + 1, false);

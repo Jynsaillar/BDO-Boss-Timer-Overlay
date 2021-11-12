@@ -1,10 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Boss_Timer_Overlay.ManagerClasses
 {
@@ -19,7 +15,7 @@ namespace Boss_Timer_Overlay.ManagerClasses
 
             try
             {
-                File.ReadAllText(filePath);
+                return File.ReadAllText(filePath);
             }
             catch (Exception)
             {

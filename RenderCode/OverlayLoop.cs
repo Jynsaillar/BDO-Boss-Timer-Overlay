@@ -15,8 +15,9 @@ namespace Boss_Timer_Overlay.RenderCode
         public void RunOverlay()
         {
             _halt = false;
-
+            // todo: Add process name as user setting instead of hardcoding it
             var process = System.Diagnostics.Process.GetProcessesByName("BlackDesert64").FirstOrDefault();
+            // todo: Add fps as user setting instead of hardcoding it
             int fps = 60;
 
             _overlayRenderer = new OverlayRenderer();

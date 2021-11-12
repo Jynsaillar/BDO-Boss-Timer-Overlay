@@ -50,6 +50,11 @@ namespace Boss_Timer_Overlay
             }
         }
 
+        private void buttonDebugJson_Click(object sender, EventArgs e)
+        {
+            textBoxDebug.Text = GeneralManager.ParseBossDataFromJObject(IoManager.JObjectFromArgs());
+        }
+
         //private void buttonUpdateBossInfo_Click(object sender, EventArgs e)
         //{
         //    if (RenderManager.RendererIsRunning == false)

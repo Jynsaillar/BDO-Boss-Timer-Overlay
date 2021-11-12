@@ -34,11 +34,13 @@
             this.textBoxDebug = new System.Windows.Forms.TextBox();
             this.buttonListOpenProcesses = new System.Windows.Forms.Button();
             this.textBoxProcesses = new System.Windows.Forms.TextBox();
+            this.buttonDebugJson = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.buttonDebugJson);
             this.panel1.Controls.Add(this.buttonToggleOverlay);
             this.panel1.Controls.Add(this.textBoxDebug);
             this.panel1.Controls.Add(this.buttonListOpenProcesses);
@@ -76,7 +78,7 @@
             // buttonListOpenProcesses
             // 
             this.buttonListOpenProcesses.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonListOpenProcesses.Location = new System.Drawing.Point(12, 415);
+            this.buttonListOpenProcesses.Location = new System.Drawing.Point(673, 415);
             this.buttonListOpenProcesses.Name = "buttonListOpenProcesses";
             this.buttonListOpenProcesses.Size = new System.Drawing.Size(115, 23);
             this.buttonListOpenProcesses.TabIndex = 1;
@@ -95,6 +97,16 @@
             this.textBoxProcesses.Size = new System.Drawing.Size(371, 397);
             this.textBoxProcesses.TabIndex = 0;
             this.textBoxProcesses.WordWrap = false;
+            // 
+            // buttonDebugJson
+            // 
+            this.buttonDebugJson.Location = new System.Drawing.Point(12, 415);
+            this.buttonDebugJson.Name = "buttonDebugJson";
+            this.buttonDebugJson.Size = new System.Drawing.Size(75, 23);
+            this.buttonDebugJson.TabIndex = 6;
+            this.buttonDebugJson.Text = "Parse JSON";
+            this.buttonDebugJson.UseVisualStyleBackColor = true;
+            this.buttonDebugJson.Click += new System.EventHandler(this.buttonDebugJson_Click);
             // 
             // MainForm
             // 
@@ -119,6 +131,7 @@
         private System.Windows.Forms.TextBox textBoxProcesses;
         private System.Windows.Forms.TextBox textBoxDebug;
         private System.Windows.Forms.Button buttonToggleOverlay;
+        private System.Windows.Forms.Button buttonDebugJson;
     }
 }
 
