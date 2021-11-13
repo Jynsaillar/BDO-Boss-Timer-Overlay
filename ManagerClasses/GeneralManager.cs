@@ -30,29 +30,6 @@ namespace Boss_Timer_Overlay.ManagerClasses
             }
         }
 
-        /*
-        public static BossData GetBossData(string webUrl)
-        {
-            var bossDataNodes = _getBossData(webUrl);
-
-            var bossName = RemoveLineBreaksAndSpaces(bossDataNodes.BossNameNode.InnerText);
-            var bossImagePath = RootUrlWithoutLastSegment(webUrl) + RemoveLineBreaksAndSpaces(bossDataNodes.BossImageNode.Attributes["src"].Value);
-            var bossTimeUntilSpawn = RemoveLineBreaksAndSpaces(bossDataNodes.BossTimerNode.InnerText);
-
-            var bossData = new BossData()
-            {
-                Name = bossName,
-                ImagePath = bossImagePath,
-                TimeUntilSpawn = TimeSpan.ParseExact(bossTimeUntilSpawn, @"hh\:mm\:ss", System.Globalization.CultureInfo.InvariantCulture),
-            };
-            bossData.TimeUntilSpawn = new TimeSpan(RoundUp(DateTime.MinValue.Add(bossData.TimeUntilSpawn), TimeSpan.FromMinutes(1)).Ticks);
-            bossData.NextSpawnTime = RoundUp(DateTime.Now.Add(bossData.TimeUntilSpawn), TimeSpan.FromMinutes(15));
-            bossData.TimeUntilSpawn = bossData.TimeUntilSpawn.Add(TimeSpan.FromMinutes(1));
-
-            return bossData;
-        }
-        */
-
         public static List<BossData> BossDataListFromJObject(JObject jobject)
         {
             if ((JObject)jobject["days"] is null)
@@ -142,24 +119,9 @@ namespace Boss_Timer_Overlay.ManagerClasses
                 }
 
                 stringBuilder.AppendLine();
-                /*
-                foreach (var timeSlot in (JArray)day.Value)
-                {
-                    stringBuilder.AppendLine(timeSlot.Value<string>());
-
-                    foreach (var boss in (JObject)jobject["days"][day.Key][timeSlot.Key])
-                    {
-                        stringBuilder.AppendLine(boss.Key);
-                    }
-                }
-                */
             }
 
             return stringBuilder.ToString();
-
-            //return string.Join(",", getNameOfDays());
-
-            return string.Empty;
         }
 
         public static string BossDataToInfoString(BossData bossData)
