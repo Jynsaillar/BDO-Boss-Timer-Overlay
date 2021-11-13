@@ -1,9 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net;
 using System.Text;
 
 namespace Boss_Timer_Overlay.ManagerClasses
@@ -14,6 +12,11 @@ namespace Boss_Timer_Overlay.ManagerClasses
         public string ImagePath { get; set; }
         public TimeSpan TimeUntilSpawn { get; set; }
         public DateTime NextSpawnTime { get; set; }
+
+        public override string ToString()
+        {
+            return $"Boss: { this.Name}\r\n\r\nTime Until Spawn: { this.TimeUntilSpawn.ToString(@"hh\:mm")}\r\n\r\nSpawn Time: { this.NextSpawnTime.ToString("dddd, HH:mm")}";
+        }
     }
 
     public static class GeneralManager
@@ -50,19 +53,73 @@ namespace Boss_Timer_Overlay.ManagerClasses
         }
         */
 
-        public static string ParseBossDataFromJObject(JObject jobject)
+        public static List<BossData> BossDataListFromJObject(JObject jobject)
         {
-            dynamic bossData = jobject;
+            if ((JObject)jobject["days"] is null)
+                return new List<BossData>();
 
-            // Local function for lazily listing all days in the JSON object (if they exist)
-            IEnumerable<string> getNameOfDays()
+            var days = (JObject)jobject["days"];
+
+            // Find today
+            var today = string.Empty;
+            foreach (var day in days)
             {
-                foreach (var day in (JObject)jobject["days"])
+                bool dayMatch = string.Equals(day.Key, DateTime.Today.DayOfWeek.ToString(), StringComparison.InvariantCultureIgnoreCase);
+
+                if (dayMatch == false)
+                    continue;
+
+                today = day.Key;
+            }
+
+            var spawnHour = TimeSpan.MinValue;
+            IEnumerable<TimeSpan> timeSlots()
+            {
+                foreach (var timeSlot in (JObject)days[today])
                 {
-                    yield return day.Key;
+                    spawnHour = DateTime.ParseExact(timeSlot.Key, "HH:mm", System.Globalization.CultureInfo.InvariantCulture).TimeOfDay;
+                    yield return spawnHour;
                 }
             }
 
+            /*
+             * We want to figure out what the next two bosses to spawn will be.
+             * Thus, we need the list of spawn times of today sorted from earliest to latest spawn time,
+             * then find all time slots after or equal to right now,
+             * then only pick the first two results.
+             *
+             */
+
+            IEnumerable<string> upcomingSpawnSlots =
+                timeSlots()
+                .OrderBy(hourOfDay => hourOfDay.Hours)
+                .Where(timeSlot => timeSlot >= DateTime.Now.TimeOfDay)
+                .Take(2)
+                .Select(time => time.ToString(@"hh\:mm"))
+                .ToArray();
+
+            IEnumerable<BossData> nextBosses()
+            {
+                foreach (var spawnSlot in upcomingSpawnSlots)
+                {
+                    foreach (var bossName in (JArray)(days[today][spawnSlot]))
+                    {
+                        var boss = new BossData();
+                        boss.Name = bossName.ToString();
+                        boss.NextSpawnTime = DateTime.Parse(spawnSlot);
+                        boss.TimeUntilSpawn = DateTime.Now - boss.NextSpawnTime.Add(TimeSpan.FromMinutes(1));
+                        boss.ImagePath = System.IO.File.Exists($"./{boss.Name}.png") ? $"./{boss.Name}.png" : "";
+
+                        yield return boss;
+                    }
+                }
+            }
+
+            return nextBosses().ToList();
+        }
+
+        public static string ParseBossDataTableFromJObject(JObject jobject)
+        {
             if ((JObject)jobject["days"] is null)
                 return string.Empty;
 
