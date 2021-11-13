@@ -15,7 +15,7 @@ namespace Boss_Timer_Overlay.RenderCode
     public class OverlayRenderer : DirectXOverlayPlugin
     {
         private readonly TickEngine _tickEngine = new TickEngine();
-        public readonly ISettings<BossOverlaySettings> Settings = new SerializableSettings<BossOverlaySettings>();
+        public readonly ISettings<OverlaySettings> Settings = new SerializableSettings<OverlaySettings>();
         private int _displayFps;
         private int _font;
         private int _outlineFont;
@@ -32,6 +32,7 @@ namespace Boss_Timer_Overlay.RenderCode
         private float _rotation;
         private Stopwatch _watch;
 
+        private List<int> _nextSpawnsIds = new List<int>();
         private List<string> _renderStrings = new List<string>();
 
         public override void Initialize(IWindow targetWindow)
@@ -88,7 +89,7 @@ namespace Boss_Timer_Overlay.RenderCode
 
             using (Stream resourceStream = currentAssembly.GetManifestResourceStream(@"Boss_Timer_Overlay.unknown.png"))
             {
-                foreach (var bossName in current.GetBosses())
+                foreach (var bossName in Boss_Timer_Overlay.StaticData.BossInfo.Bosses)
                 {
                     var imagePath = Path.Combine("./", bossName, ".png");
                     if (!File.Exists(imagePath))
@@ -155,25 +156,76 @@ namespace Boss_Timer_Overlay.RenderCode
             OverlayWindow.Graphics.BeginScene();
             OverlayWindow.Graphics.ClearScene();
 
-            // Draw segment; Place draw code here
-
-            OverlayWindow.Graphics.DrawBitmaps(1810f, 295f, 1810f + 90f, 1080 - (295f + 90f), 0, 100); // x, y, x+imageWidth, y+imageHeight, x offset for each following bitmap, y offset for each following bitmap
-
-            int xOffset = 0;
-            int yOffset = 0;
-
-            foreach (var renderString in _renderStrings)
+            if (_nextSpawnsIds.Count != _renderStrings.Count)
             {
-                // Outline:
-                OverlayWindow.Graphics.DrawText(renderString, _outlineFont, _blackBrush, 1605 + 1 + xOffset, 300 + 1 + yOffset, false);
-                // Actual text:
-                OverlayWindow.Graphics.DrawText(renderString, _font, _whiteBrush, 1605 + xOffset, 300 + yOffset, false);
-
-                xOffset += 0;
-                yOffset += 100;
+                OverlayWindow.Graphics.EndScene();
+                return;
             }
 
+            // Draw segment; Place draw code here
+
+            float screenWidth = 1920f;
+            float screenHeight = 1080f;
+            float imgDimensions = 90f; // 90x90
+            float xStart = screenWidth - imgDimensions - 20;
+            float yStart = 195f;
+            int xOffset = 0;
+            int yOffset = 10;
+
+            for (int i = 0; i < _nextSpawnsIds.Count; i++)
+            {
+                // Boss images
+                OverlayWindow.Graphics.DrawBitmap(
+
+                    bitmapIndex: _nextSpawnsIds[i],
+                    left: xStart,
+                    top: yStart,
+                    right: xStart + i * imgDimensions + xOffset,
+                    bottom: yStart + i * imgDimensions + yOffset);
+
+                // Strings with boss name, spawn time, time until spawn
+
+                // Outline:
+                OverlayWindow.Graphics.DrawText(
+
+                    text: _renderStrings[i],
+                    font: _outlineFont,
+                    brush: _blackBrush,
+                    x: 1605 + 1 + xOffset,
+                    y: 300 + 1 + i * yOffset,
+                    bufferText: false);
+
+                // Actual text:
+                OverlayWindow.Graphics.DrawText(
+
+                    text: _renderStrings[i],
+                    font: _outlineFont,
+                    brush: _blackBrush,
+                    x: 1605 + xOffset,
+                    y: 300 + i * yOffset,
+                    bufferText: false);
+            }
+
+            //OverlayWindow.Graphics.DrawBitmaps(1810f, 295f, 1810f + 90f, 1080 - (295f + 90f), 0, 100); // x, y, x+imageWidth, y+imageHeight, x offset for each following bitmap, y offset for each following bitmap
+
             OverlayWindow.Graphics.EndScene();
+        }
+
+        public void SetNextSpawns(int[] nextSpawns)
+        {
+            _nextSpawnsIds.Clear();
+
+            if (nextSpawns.Length != 2)
+            {
+                return;
+            }
+
+            _nextSpawnsIds.AddRange(nextSpawns);
+        }
+
+        public void SetNextSpawns(List<int> nextSpawns)
+        {
+            SetNextSpawns(nextSpawns.ToArray());
         }
 
         public void AddRenderString(string renderString)
