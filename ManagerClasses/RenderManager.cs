@@ -44,23 +44,6 @@ namespace Boss_Timer_Overlay.RenderCode
             if (RendererIsRunning == false)
                 return;
 
-            /*
-            var bossData = GeneralManager.GetBossData("https://mmotimer.com/bdo/streamwidget/stream.php?server=eu");
-
-            var bossInfoString = GeneralManager.BossDataToInfoString(bossData);
-
-            var bossImagePath = GeneralManager.DownloadImage(bossData.ImageUrl, $"{bossData.Name}");
-
-            if (File.Exists(bossImagePath))
-            {
-                SetBitmapImage(bossImagePath);
-            }
-
-            SetRenderFont("Georgia", 12);
-            UpdateRenderString(bossInfoString);
-            */
-
-            //var bossData = GeneralManager.ParseBossDataTableFromJObject(IoManager.JObjectFromArgs());
             var upcomingBosses = GeneralManager.BossDataListFromJObject(IoManager.JObjectFromArgs());
 
             // Set font
