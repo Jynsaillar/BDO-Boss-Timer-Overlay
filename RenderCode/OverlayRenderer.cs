@@ -86,16 +86,19 @@ namespace Boss_Timer_Overlay.RenderCode
                 OverlayWindow.Graphics.LoadBitmapFromResource(resourceStream);
             }
 
-            foreach (var bossName in current.GetBosses())
+            using (Stream resourceStream = currentAssembly.GetManifestResourceStream(@"Boss_Timer_Overlay.unknown.png"))
             {
-                var imagePath = Path.Combine("./", bossName, ".png");
-                if (!File.Exists(imagePath))
+                foreach (var bossName in current.GetBosses())
                 {
-                    //todo: Load default image
-                    // Load default image here
-                    continue;
+                    var imagePath = Path.Combine("./", bossName, ".png");
+                    if (!File.Exists(imagePath))
+                    {
+                        //todo: Load default image
+                        OverlayWindow.Graphics.LoadBitmapFromResource(resourceStream);
+                        continue;
+                    }
+                    OverlayWindow.Graphics.LoadBitmap(imagePath);
                 }
-                OverlayWindow.Graphics.LoadBitmap(imagePath);
             }
         }
 

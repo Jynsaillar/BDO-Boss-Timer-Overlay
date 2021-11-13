@@ -124,6 +124,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="bdobosstimer.ico" />
+    <EmbeddedResource Include="unknown.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Overlay.NET\src\Overlay.NET\Overlay.NET.csproj">
