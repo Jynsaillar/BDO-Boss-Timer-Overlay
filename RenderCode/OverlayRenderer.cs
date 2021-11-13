@@ -15,7 +15,7 @@ namespace Boss_Timer_Overlay.RenderCode
     public class OverlayRenderer : DirectXOverlayPlugin
     {
         private readonly TickEngine _tickEngine = new TickEngine();
-        public readonly ISettings<OverlaySettings> Settings = new SerializableSettings<OverlaySettings>();
+        public readonly ISettings<BossOverlaySettings> Settings = new SerializableSettings<BossOverlaySettings>();
         private int _displayFps;
         private int _font;
         private int _outlineFont;
@@ -84,6 +84,18 @@ namespace Boss_Timer_Overlay.RenderCode
             using (Stream resourceStream = currentAssembly.GetManifestResourceStream(@"Boss_Timer_Overlay.updating.png"))
             {
                 OverlayWindow.Graphics.LoadBitmapFromResource(resourceStream);
+            }
+
+            foreach (var bossName in current.GetBosses())
+            {
+                var imagePath = Path.Combine("./", bossName, ".png");
+                if (!File.Exists(imagePath))
+                {
+                    //todo: Load default image
+                    // Load default image here
+                    continue;
+                }
+                OverlayWindow.Graphics.LoadBitmap(imagePath);
             }
         }
 
