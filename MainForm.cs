@@ -41,7 +41,10 @@ namespace Boss_Timer_Overlay
             else
             {
                 RenderManager.StartRenderer();
-                RenderManager.Update();
+                // Calling Update() immediately after starting the renderer causes a race condition since at this point
+                // the render queue is still being initiated, configured, images are being loaded etc.
+                // Either make this async or simply wait until the next timer tick updates the UI
+                //RenderManager.Update();
 
                 buttonToggleOverlay.Text = "Hide Overlay";
 
@@ -52,7 +55,7 @@ namespace Boss_Timer_Overlay
 
         private void buttonDebugJson_Click(object sender, EventArgs e)
         {
-            textBoxDebug.Text = GeneralManager.ParseBossDataFromJObject(IoManager.JObjectFromArgs());
+            textBoxDebug.Text = GeneralManager.ParseBossDataTableFromJObject(IoManager.JObjectFromArgs());
         }
 
         //private void buttonUpdateBossInfo_Click(object sender, EventArgs e)

@@ -1,5 +1,6 @@
 ﻿using Boss_Timer_Overlay.ManagerClasses;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Timers;
@@ -58,6 +59,27 @@ namespace Boss_Timer_Overlay.RenderCode
             SetRenderFont("Georgia", 12);
             UpdateRenderString(bossInfoString);
             */
+
+            //var bossData = GeneralManager.ParseBossDataTableFromJObject(IoManager.JObjectFromArgs());
+            var upcomingBosses = GeneralManager.BossDataListFromJObject(IoManager.JObjectFromArgs());
+
+            // Set font
+            SetRenderFont("Georgia", 12);
+
+            // Clear old RenderStrings
+            ClearRenderStrings();
+
+            foreach (var upcomingBoss in upcomingBosses)
+            {
+                // Set Bitmap
+                if (File.Exists(upcomingBoss.ImagePath))
+                {
+                    AddBitmapImage(upcomingBoss.ImagePath);
+                }
+
+                // Update RenderStrings
+                AddRenderString(upcomingBoss.ToString());
+            }
         }
 
         public static void StartRenderer()
@@ -96,9 +118,14 @@ namespace Boss_Timer_Overlay.RenderCode
             RendererIsRunning = false;
         }
 
-        public static void UpdateRenderString(string renderString)
+        public static void ClearRenderStrings()
         {
-            _overlayLoop.UpdateRenderString(renderString);
+            _overlayLoop.ClearRenderStrings();
+        }
+
+        public static void AddRenderString(string renderString)
+        {
+            _overlayLoop.AddRenderString(renderString);
         }
 
         public static void SetRenderFont(string fontName, int fontSize)
@@ -106,9 +133,9 @@ namespace Boss_Timer_Overlay.RenderCode
             _overlayLoop.SetFont(fontName, fontSize);
         }
 
-        public static void SetBitmapImage(string filePath)
+        public static void AddBitmapImage(string filePath)
         {
-            _overlayLoop.SetBitmap(filePath);
+            _overlayLoop.AddBitmap(filePath);
         }
     }
 }

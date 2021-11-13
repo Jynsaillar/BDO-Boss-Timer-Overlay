@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Drawing;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using Boss_Timer_Overlay.Internals;
@@ -31,7 +32,7 @@ namespace Boss_Timer_Overlay.RenderCode
         private float _rotation;
         private Stopwatch _watch;
 
-        private string _renderString = string.Empty;
+        private List<string> _renderStrings = new List<string>();
 
         public override void Initialize(IWindow targetWindow)
         {
@@ -86,6 +87,11 @@ namespace Boss_Timer_Overlay.RenderCode
             }
         }
 
+        public void ClearRenderStrings()
+        {
+            _renderStrings.Clear();
+        }
+
         private void OnTick(object sender, EventArgs e)
         {
             if (!OverlayWindow.IsVisible)
@@ -136,19 +142,28 @@ namespace Boss_Timer_Overlay.RenderCode
 
             // Draw segment; Place draw code here
 
-            OverlayWindow.Graphics.DrawBitmap(0, 1810f, 295f, 1810f + 90f, 295f + 90f); // x, y, x+imageWidth, y+imageHeight
+            OverlayWindow.Graphics.DrawBitmaps(1810f, 295f, 1810f + 90f, 1080 - (295f + 90f), 0, 100); // x, y, x+imageWidth, y+imageHeight, x offset for each following bitmap, y offset for each following bitmap
 
-            // Outline:
-            OverlayWindow.Graphics.DrawText(_renderString, _outlineFont, _blackBrush, 1605 + 1, 300 + 1, false);
-            // Actual text:
-            OverlayWindow.Graphics.DrawText(_renderString, _font, _whiteBrush, 1605, 300, false);
+            int xOffset = 0;
+            int yOffset = 0;
+
+            foreach (var renderString in _renderStrings)
+            {
+                // Outline:
+                OverlayWindow.Graphics.DrawText(renderString, _outlineFont, _blackBrush, 1605 + 1 + xOffset, 300 + 1 + yOffset, false);
+                // Actual text:
+                OverlayWindow.Graphics.DrawText(renderString, _font, _whiteBrush, 1605 + xOffset, 300 + yOffset, false);
+
+                xOffset += 0;
+                yOffset += 100;
+            }
 
             OverlayWindow.Graphics.EndScene();
         }
 
-        public void SetRenderString(string renderString)
+        public void AddRenderString(string renderString)
         {
-            _renderString = renderString;
+            _renderStrings.Add(renderString);
         }
 
         public void SetFont(string fontName, int fontSize)
@@ -157,7 +172,7 @@ namespace Boss_Timer_Overlay.RenderCode
             _outlineFont = OverlayWindow.Graphics.CreateFont(fontName, fontSize, true, false);
         }
 
-        public void SetBitmap(string filePath)
+        public void AddBitmap(string filePath)
         {
             // File size check, existing file of size 0 must be ignored!
             if (new System.IO.FileInfo(filePath).Length == 0)

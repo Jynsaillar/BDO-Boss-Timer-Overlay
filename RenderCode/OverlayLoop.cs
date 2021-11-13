@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Overlay.NET.Common;
 using Process.NET;
 using Process.NET.Memory;
@@ -55,9 +57,9 @@ namespace Boss_Timer_Overlay.RenderCode
             _halt = true;
         }
 
-        public void UpdateRenderString(string renderString)
+        public void AddRenderString(string renderString)
         {
-            _overlayRenderer.SetRenderString(renderString);
+            _overlayRenderer.AddRenderString(renderString);
         }
 
         public void SetFont(string fontName, int fontSize)
@@ -65,9 +67,14 @@ namespace Boss_Timer_Overlay.RenderCode
             _overlayRenderer.SetFont(fontName, fontSize);
         }
 
-        public void SetBitmap(string filePath)
+        public void AddBitmap(string filePath)
         {
-            _overlayRenderer.SetBitmap(filePath);
+            _overlayRenderer.AddBitmap(filePath);
+        }
+
+        public void ClearRenderStrings()
+        {
+            _overlayRenderer.ClearRenderStrings();
         }
     }
 }
