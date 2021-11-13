@@ -29,7 +29,7 @@ namespace Boss_Timer_Overlay.RenderCode
         private static double GetTimerInterval()
         {
             DateTime now = DateTime.Now;
-            return ((60 - now.Second) * 1000 - now.Millisecond);
+            return ((60 - now.Second) * 1000 - now.Millisecond) *.10; //todo: remove debug timer downscaling
         }
 
         private static void UpdateTimer_Elapsed(object sender, ElapsedEventArgs e)
@@ -52,17 +52,16 @@ namespace Boss_Timer_Overlay.RenderCode
             // Clear old RenderStrings
             ClearRenderStrings();
 
+            List<int> nextSpawnIds = new List<int>();
             foreach (var upcomingBoss in upcomingBosses)
             {
-                // Set Bitmap
-                if (File.Exists(upcomingBoss.ImagePath))
-                {
-                    AddBitmapImage(upcomingBoss.ImagePath);
-                }
-
+                int bossId = Boss_Timer_Overlay.StaticData.BossInfo.GetBossIdFromName(upcomingBoss.Name);
+                nextSpawnIds.Add(bossId);
                 // Update RenderStrings
                 AddRenderString(upcomingBoss.ToString());
             }
+
+            SetNextSpawns(nextSpawnIds);
         }
 
         public static void StartRenderer()
@@ -99,6 +98,14 @@ namespace Boss_Timer_Overlay.RenderCode
             UpdateTimer.Stop();
 
             RendererIsRunning = false;
+        }
+
+        public static void SetNextSpawns(List<int> nextSpawns)
+        {
+            if (nextSpawns == null || nextSpawns.Count != 2)
+                return;
+
+            _overlayLoop.SetNextSpawns(nextSpawns);
         }
 
         public static void ClearRenderStrings()

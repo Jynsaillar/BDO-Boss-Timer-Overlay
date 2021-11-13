@@ -87,19 +87,19 @@ namespace Boss_Timer_Overlay.RenderCode
                 OverlayWindow.Graphics.LoadBitmapFromResource(resourceStream);
             }
 
-            using (Stream resourceStream = currentAssembly.GetManifestResourceStream(@"Boss_Timer_Overlay.unknown.png"))
+            foreach (var bossName in Boss_Timer_Overlay.StaticData.BossInfo.Bosses)
             {
-                foreach (var bossName in Boss_Timer_Overlay.StaticData.BossInfo.Bosses)
+                var imagePath = Path.Combine("./", bossName, ".png");
+                if (!File.Exists(imagePath))
                 {
-                    var imagePath = Path.Combine("./", bossName, ".png");
-                    if (!File.Exists(imagePath))
+                    //todo: Don't reload default image from disk every time
+                    using (Stream resourceStream = currentAssembly.GetManifestResourceStream(@"Boss_Timer_Overlay.unknown.png"))
                     {
-                        //todo: Load default image
                         OverlayWindow.Graphics.LoadBitmapFromResource(resourceStream);
-                        continue;
                     }
-                    OverlayWindow.Graphics.LoadBitmap(imagePath);
+                    continue;
                 }
+                OverlayWindow.Graphics.LoadBitmap(imagePath);
             }
         }
 
@@ -156,7 +156,7 @@ namespace Boss_Timer_Overlay.RenderCode
             OverlayWindow.Graphics.BeginScene();
             OverlayWindow.Graphics.ClearScene();
 
-            if (_nextSpawnsIds.Count != _renderStrings.Count)
+            if (_nextSpawnsIds.Count != 2 || _nextSpawnsIds.Count != _renderStrings.Count)
             {
                 OverlayWindow.Graphics.EndScene();
                 return;
@@ -211,21 +211,11 @@ namespace Boss_Timer_Overlay.RenderCode
             OverlayWindow.Graphics.EndScene();
         }
 
-        public void SetNextSpawns(int[] nextSpawns)
+        public void SetNextSpawns(List<int> nextSpawns)
         {
             _nextSpawnsIds.Clear();
 
-            if (nextSpawns.Length != 2)
-            {
-                return;
-            }
-
             _nextSpawnsIds.AddRange(nextSpawns);
-        }
-
-        public void SetNextSpawns(List<int> nextSpawns)
-        {
-            SetNextSpawns(nextSpawns.ToArray());
         }
 
         public void AddRenderString(string renderString)

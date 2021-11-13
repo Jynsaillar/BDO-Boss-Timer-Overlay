@@ -57,6 +57,11 @@ namespace Boss_Timer_Overlay.RenderCode
             _halt = true;
         }
 
+        public void SetNextSpawns(List<int> nextSpawns)
+        {
+            _overlayRenderer.SetNextSpawns(nextSpawns);
+        }
+
         public void AddRenderString(string renderString)
         {
             _overlayRenderer.AddRenderString(renderString);
