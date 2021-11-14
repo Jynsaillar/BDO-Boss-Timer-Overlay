@@ -36,7 +36,7 @@ namespace Boss_Timer_Overlay.ManagerClasses
                 return new List<BossData>();
 
             var days = (JObject)jobject["days"];
-
+            //todo: tomorrow exists, what happens if the next spawns are after 2400, if the next spawns are Sun->Mon
             // Find today
             var today = string.Empty;
             foreach (var day in days)
