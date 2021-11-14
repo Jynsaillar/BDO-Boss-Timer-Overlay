@@ -67,11 +67,6 @@ namespace Boss_Timer_Overlay.RenderCode
             _overlayRenderer.AddRenderString(renderString);
         }
 
-        public void SetFont(string fontName, int fontSize)
-        {
-            _overlayRenderer.SetFont(fontName, fontSize);
-        }
-
         public void AddBitmap(string filePath)
         {
             _overlayRenderer.AddBitmap(filePath);

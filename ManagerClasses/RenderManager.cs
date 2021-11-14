@@ -29,7 +29,7 @@ namespace Boss_Timer_Overlay.RenderCode
         private static double GetTimerInterval()
         {
             DateTime now = DateTime.Now;
-            return ((60 - now.Second) * 1000 - now.Millisecond) *.10; //todo: remove debug timer downscaling
+            return ((60 - now.Second) * 1000 - now.Millisecond) * .10; //todo: remove debug timer downscaling
         }
 
         private static void UpdateTimer_Elapsed(object sender, ElapsedEventArgs e)
@@ -45,9 +45,6 @@ namespace Boss_Timer_Overlay.RenderCode
                 return;
 
             var upcomingBosses = GeneralManager.BossDataListFromJObject(IoManager.JObjectFromArgs());
-
-            // Set font
-            SetRenderFont("Georgia", 12);
 
             // Clear old RenderStrings
             ClearRenderStrings();
@@ -102,7 +99,7 @@ namespace Boss_Timer_Overlay.RenderCode
 
         public static void SetNextSpawns(List<int> nextSpawns)
         {
-            if (nextSpawns == null || nextSpawns.Count != 2)
+            if (nextSpawns == null || nextSpawns.Count < 2)
                 return;
 
             _overlayLoop.SetNextSpawns(nextSpawns);
@@ -116,11 +113,6 @@ namespace Boss_Timer_Overlay.RenderCode
         public static void AddRenderString(string renderString)
         {
             _overlayLoop.AddRenderString(renderString);
-        }
-
-        public static void SetRenderFont(string fontName, int fontSize)
-        {
-            _overlayLoop.SetFont(fontName, fontSize);
         }
 
         public static void AddBitmapImage(string filePath)

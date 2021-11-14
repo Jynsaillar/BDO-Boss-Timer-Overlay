@@ -69,9 +69,9 @@ namespace Boss_Timer_Overlay.RenderCode
             _redOpacityBrush = OverlayWindow.Graphics.CreateBrush(System.Drawing.Color.FromArgb(80, 255, 0, 0));
             _interiorBrush = OverlayWindow.Graphics.CreateBrush(0x7FFFFF00);
 
-            _font = OverlayWindow.Graphics.CreateFont("Arial", 20);
-            _outlineFont = OverlayWindow.Graphics.CreateFont("Arial", 20, false, true);
-            _hugeFont = OverlayWindow.Graphics.CreateFont("Arial", 50, true);
+            _font = OverlayWindow.Graphics.CreateFont("Georgia", 20);
+            _outlineFont = OverlayWindow.Graphics.CreateFont("Georgia", 20, false, true);
+            _hugeFont = OverlayWindow.Graphics.CreateFont("Georgia", 50, true);
 
             _rotation = 0.0f;
             _displayFps = 0;
@@ -89,9 +89,10 @@ namespace Boss_Timer_Overlay.RenderCode
 
             foreach (var bossName in Boss_Timer_Overlay.StaticData.BossInfo.Bosses)
             {
-                var imagePath = Path.Combine("./", bossName, ".png");
+                var imagePath = $"./{bossName}.png";
                 if (!File.Exists(imagePath))
                 {
+                    Log.Error($"{imagePath} is missing!");
                     //todo: Don't reload default image from disk every time
                     using (Stream resourceStream = currentAssembly.GetManifestResourceStream(@"Boss_Timer_Overlay.unknown.png"))
                     {
@@ -100,6 +101,7 @@ namespace Boss_Timer_Overlay.RenderCode
                     continue;
                 }
                 OverlayWindow.Graphics.LoadBitmap(imagePath);
+                Log.Info($"{imagePath} loaded successfully.");
             }
         }
 
@@ -155,8 +157,9 @@ namespace Boss_Timer_Overlay.RenderCode
         {
             OverlayWindow.Graphics.BeginScene();
             OverlayWindow.Graphics.ClearScene();
+            Log.Info($"InternalRender: {string.Join(", ", _nextSpawnsIds)}");
 
-            if (_nextSpawnsIds.Count != 2 || _nextSpawnsIds.Count != _renderStrings.Count)
+            if (_nextSpawnsIds.Count != _renderStrings.Count)
             {
                 OverlayWindow.Graphics.EndScene();
                 return;
@@ -199,7 +202,7 @@ namespace Boss_Timer_Overlay.RenderCode
                 OverlayWindow.Graphics.DrawText(
 
                     text: _renderStrings[i],
-                    font: _outlineFont,
+                    font: _font,
                     brush: _blackBrush,
                     x: 1605 + xOffset,
                     y: 300 + i * yOffset,
@@ -221,12 +224,6 @@ namespace Boss_Timer_Overlay.RenderCode
         public void AddRenderString(string renderString)
         {
             _renderStrings.Add(renderString);
-        }
-
-        public void SetFont(string fontName, int fontSize)
-        {
-            _font = OverlayWindow.Graphics.CreateFont(fontName, fontSize, true);
-            _outlineFont = OverlayWindow.Graphics.CreateFont(fontName, fontSize, true, false);
         }
 
         public void AddBitmap(string filePath)
